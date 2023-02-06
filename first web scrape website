@@ -1,0 +1,36 @@
+import requests
+from bs4 import BeautifulSoup
+import re
+import pandas as pd
+
+url = 'https://webscraper.io/test-sites/e-commerce/allinone/phones/touch'
+page = requests.get(url) 
+
+product_name = soup.find_all('a', class_ = 'title')
+price = soup.find_all('h4', class_ = 'pull-right price')
+reviews = soup.find_all('p', class_ = 'pull-right')
+description = soup.find_all('p', class_ = 'description')
+
+product_name_list = []
+for i in product_name:
+    names = i.text
+    product_name_list.append(names)
+    
+price_list = []
+for i in price:
+    prices = i.text
+    price_list.append(prices)
+    
+review_list = []
+for i in reviews:
+    review = i.text
+    review_list.append(review)
+    
+description_list = []
+for i in description:
+    descriptions = i.text
+    description_list.append(descriptions)
+
+# create a table with labels and call the empty list to the table variable
+table = pd.DataFrame({'Product Name':product_name_list, 'Description':description_list,'Price':price_list,'Reviews':review_list})
+print(table)
